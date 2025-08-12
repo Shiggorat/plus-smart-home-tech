@@ -21,13 +21,11 @@ public class KafkaEventProducer {
     }
 
     public void sendRecord(ProducerRecord<String, SpecificRecordBase> record) {
-        try(producer) {
+        try {
             producer.send(record);
             producer.flush();
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to send Kafka record", e);
         }
     }
-
 }
