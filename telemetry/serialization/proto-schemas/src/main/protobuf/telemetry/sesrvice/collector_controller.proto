@@ -16,3 +16,7 @@ service CollectorController {
   rpc CollectHubEvent (message.event.HubEventProto)
       returns (google.protobuf.Empty);
 }
+
+
+
+
