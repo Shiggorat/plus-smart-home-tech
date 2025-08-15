@@ -1,13 +1,13 @@
 package ru.yandex.practicum.telemetry.collector.utils;
 
 import org.mapstruct.MappingConstants;
+import ru.yandex.practicum.grpc.telemetry.event.DeviceActionProto;
+import ru.yandex.practicum.grpc.telemetry.event.ScenarioConditionProto;
 import ru.yandex.practicum.kafka.telemetry.event.*;
-import ru.yandex.practicum.telemetry.collector.model.hub.DeviceAction;
-import ru.yandex.practicum.telemetry.collector.model.hub.ScenarioCondition;
 
 @org.mapstruct.Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
 public interface Mapper {
-    default DeviceActionAvro toDeviceActionAvro(DeviceAction deviceAction) {
+    default DeviceActionAvro toDeviceActionAvro(DeviceActionProto deviceAction) {
         return DeviceActionAvro.newBuilder()
                 .setType(ActionTypeAvro.valueOf(deviceAction.getType().name()))
                 .setSensorId(deviceAction.getSensorId())
@@ -15,12 +15,24 @@ public interface Mapper {
                 .build();
     }
 
-    default ScenarioConditionAvro toScenarioConditionAvro(ScenarioCondition scenarioCondition) {
-        return ScenarioConditionAvro.newBuilder()
+    default ScenarioConditionAvro toScenarioConditionAvro(ScenarioConditionProto scenarioCondition) {
+        ScenarioConditionAvro.Builder builder = ScenarioConditionAvro.newBuilder()
                 .setType(ConditionTypeAvro.valueOf(scenarioCondition.getType().name()))
-                .setValue(scenarioCondition.getValue())
                 .setOperation(ConditionOperationAvro.valueOf(scenarioCondition.getOperation().name()))
-                .setSensorId(scenarioCondition.getSensorId())
-                .build();
+                .setSensorId(scenarioCondition.getSensorId());
+
+        switch (scenarioCondition.getValueCase()) {
+            case BOOL_VALUE:
+                builder.setValue(scenarioCondition.getBoolValue());
+                break;
+            case INT_VALUE:
+                builder.setValue(scenarioCondition.getIntValue());
+                break;
+            case VALUE_NOT_SET:
+                builder.setValue(null);
+                break;
+        }
+
+        return builder.build();
     }
 }
