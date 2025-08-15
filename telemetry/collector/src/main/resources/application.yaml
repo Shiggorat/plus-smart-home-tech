@@ -6,5 +6,6 @@ kafka:
     telemetry-snapshots-v1: telemetry.snapshots.v1
     telemetry-hubs-v1: telemetry.hubs.v1
 
-server:
-  port: 8080
+grpc:
+  server:
+    port: 59091
