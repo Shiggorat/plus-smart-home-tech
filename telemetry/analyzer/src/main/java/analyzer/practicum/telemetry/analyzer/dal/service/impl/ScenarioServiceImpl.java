@@ -30,6 +30,7 @@ public class ScenarioServiceImpl implements ScenarioService {
         }
     }
 
+    @Transactional
     public void remove(String name) {
         repository.deleteByName(name);
     }
