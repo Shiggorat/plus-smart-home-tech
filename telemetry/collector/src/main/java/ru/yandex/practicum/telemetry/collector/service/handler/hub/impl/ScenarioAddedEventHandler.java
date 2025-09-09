@@ -1,10 +1,9 @@
 package ru.yandex.practicum.telemetry.collector.service.handler.hub.impl;
 
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
+import ru.yandex.practicum.grpc.telemetry.event.ScenarioAddedEventProto;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioAddedEventAvro;
-import ru.yandex.practicum.telemetry.collector.model.hub.HubEvent;
-import ru.yandex.practicum.telemetry.collector.model.hub.ScenarioAddedEvent;
-import ru.yandex.practicum.telemetry.collector.model.hub.enumeration.HubEventType;
 import ru.yandex.practicum.telemetry.collector.service.handler.EventProducer;
 import ru.yandex.practicum.telemetry.collector.utils.Mapper;
 
@@ -20,23 +19,23 @@ public class ScenarioAddedEventHandler extends BaseHubEventHandler<ScenarioAdded
     }
 
     @Override
-    public HubEventType getMessageType() {
-        return HubEventType.SCENARIO_ADDED;
+    public HubEventProto.PayloadCase getMessageType() {
+        return HubEventProto.PayloadCase.SCENARIO_ADDED;
     }
 
     @Override
-    public void handle(HubEvent event) {
+    public void handle(HubEventProto event) {
         eventProducer.sendHubEvent(mapToHubEventAvro(event));
     }
 
     @Override
-    protected ScenarioAddedEventAvro mapToAvro(HubEvent event) {
-        ScenarioAddedEvent scenarioAddedEvent = (ScenarioAddedEvent) event;
+    protected ScenarioAddedEventAvro mapToAvro(HubEventProto event) {
+        ScenarioAddedEventProto scenarioAddedEvent = event.getScenarioAdded();
         return ScenarioAddedEventAvro.newBuilder()
-                .setActions(scenarioAddedEvent.getActions().stream()
+                .setActions(scenarioAddedEvent.getActionList().stream()
                         .map(mapper::toDeviceActionAvro)
                         .collect(Collectors.toList()))
-                .setConditions(scenarioAddedEvent.getConditions().stream()
+                .setConditions(scenarioAddedEvent.getConditionList().stream()
                         .map(mapper::toScenarioConditionAvro)
                         .collect(Collectors.toList()))
                 .setName(scenarioAddedEvent.getName())
