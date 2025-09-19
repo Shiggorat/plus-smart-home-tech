@@ -14,6 +14,7 @@ import ru.yandex.practicum.kafka.telemetry.event.ScenarioAddedEventAvro;
 public class ScenarioAddedHandler implements HubEventHandler<ScenarioAddedEventAvro> {
 
     private final ScenarioService service;
+
     @Override
     public Class<ScenarioAddedEventAvro> getMessageType() {
         return ScenarioAddedEventAvro.class;

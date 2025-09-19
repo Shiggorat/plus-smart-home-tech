@@ -14,6 +14,7 @@ import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 public class DeviceAddedHandler implements HubEventHandler<DeviceAddedEventAvro> {
 
     private final SensorService service;
+
     @Override
     public Class<DeviceAddedEventAvro> getMessageType() {
         return DeviceAddedEventAvro.class;
