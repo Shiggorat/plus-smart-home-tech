@@ -2,7 +2,9 @@ package ru.yandex.practicum.commerce.store.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import ru.yandex.practicum.commerce.enums.ProductCategory;
 import ru.yandex.practicum.commerce.enums.ProductState;
 import ru.yandex.practicum.commerce.enums.QuantityState;
@@ -11,8 +13,10 @@ import java.math.BigDecimal;
 
 @Entity
 @Table(name = "products", schema = "commerce_store")
-@Setter
 @Getter
+@Setter
+@ToString
+@RequiredArgsConstructor
 public class ProductEntity {
 
     @Id
