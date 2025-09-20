@@ -67,6 +67,7 @@ public class CartServiceImpl implements CartService {
         }
     }
 
+    @Transactional
     @Override
     public ShoppingCartDto removeProductsFromCart(String username, Set<String> productIds) {
         checkUsername(username);
