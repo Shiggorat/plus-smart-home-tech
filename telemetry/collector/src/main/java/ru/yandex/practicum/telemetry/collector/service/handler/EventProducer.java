@@ -10,9 +10,7 @@ import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.telemetry.collector.config.KafkaTopicsProperties;
 
-import java.security.Timestamp;
 import java.time.Duration;
-import java.time.Instant;
 
 @Component
 @RequiredArgsConstructor

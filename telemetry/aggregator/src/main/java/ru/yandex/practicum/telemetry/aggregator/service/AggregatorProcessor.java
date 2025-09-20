@@ -76,9 +76,9 @@ public class AggregatorProcessor {
                 new OffsetAndMetadata(record.offset() + 1)
         );
 
-        if(count % 10 == 0) {
+        if (count % 10 == 0) {
             consumer.commitAsync(currentOffsets, (offsets, exception) -> {
-                if(exception != null) {
+                if (exception != null) {
                     log.warn("Ошибка во время фиксации оффсетов: {}", offsets, exception);
                 }
             });
@@ -96,7 +96,7 @@ public class AggregatorProcessor {
                         timestamp,
                         snapshot.getHubId(),
                         snapshot
-                        );
+                );
                 producer.send(snapshotRecord, (metadata, ex) -> {
                     if (ex != null) {
                         log.error("Ошибка при отправке снапшота для хаба {}: {}", snapshot.getHubId(), ex.getMessage(), ex);
@@ -105,7 +105,7 @@ public class AggregatorProcessor {
                                 snapshot.getHubId(), metadata.partition(), metadata.offset());
                     }
                 });
-        });
+            });
         } else {
             log.warn("Получено неизвестное сообщение: {}", record.value());
         }

@@ -6,6 +6,7 @@ import java.util.List;
 
 public interface ScenarioService {
     void save(Scenario scenario);
+
     void remove(String name);
 
     List<Scenario> getByHubId(String hubId);

@@ -7,6 +7,7 @@ import java.time.Duration;
 
 public interface KafkaClient {
     Consumer<String, SpecificRecordBase> getConsumerHub();
+
     Consumer<String, SpecificRecordBase> getConsumerSnapshot();
 
     Duration getPollTimeout();

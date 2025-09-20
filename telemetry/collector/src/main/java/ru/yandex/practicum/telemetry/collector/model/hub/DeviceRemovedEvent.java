@@ -15,6 +15,7 @@ import ru.yandex.practicum.telemetry.collector.model.hub.enumeration.HubEventTyp
 public class DeviceRemovedEvent extends HubEvent {
     @NotNull
     String id;
+
     @Override
     public HubEventType getType() {
         return HubEventType.DEVICE_REMOVED;
