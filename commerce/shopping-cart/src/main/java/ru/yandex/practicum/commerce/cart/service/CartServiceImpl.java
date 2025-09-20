@@ -3,6 +3,7 @@ package ru.yandex.practicum.commerce.cart.service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.commerce.cart.mapper.CartMapper;
 import ru.yandex.practicum.commerce.cart.model.CartProduct;
 import ru.yandex.practicum.commerce.cart.model.CartState;
@@ -29,6 +30,7 @@ public class CartServiceImpl implements CartService {
     private final WarehouseService warehouseService;
 
 
+    @Transactional
     @Override
     public ShoppingCartDto addProductsToCart(Map<String, Integer> products, String username) {
         checkUsername(username);

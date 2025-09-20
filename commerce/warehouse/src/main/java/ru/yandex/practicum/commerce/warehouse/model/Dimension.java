@@ -2,10 +2,12 @@ package ru.yandex.practicum.commerce.warehouse.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Embeddable
-@Data
+@Setter
+@Getter
 public class Dimension {
     @Column(name = "dimension_width")
     private float width;

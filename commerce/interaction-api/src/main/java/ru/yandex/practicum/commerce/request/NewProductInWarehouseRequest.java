@@ -14,7 +14,6 @@ import ru.yandex.practicum.commerce.dto.DimensionDto;
 @AllArgsConstructor
 @Builder
 public class NewProductInWarehouseRequest {
-    @NotNull
     @NotBlank
     private String productId;
     private Boolean fragile;

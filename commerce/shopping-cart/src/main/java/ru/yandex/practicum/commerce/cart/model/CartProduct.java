@@ -1,10 +1,12 @@
 package ru.yandex.practicum.commerce.cart.model;
 
 import jakarta.persistence.*;
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 @Entity
-@Data
+@Setter
+@Getter
 @Table(name = "cart_products", schema = "commerce_cart")
 public class CartProduct {
     @Id
