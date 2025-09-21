@@ -2,7 +2,7 @@ spring:
   application:
     name: analyzer
   config:
-    import: configserver:http://localhost:8888
+    import: "configserver:"
   cloud:
     config:
       discovery:
@@ -17,5 +17,6 @@ eureka:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
   instance:
-    preferIpAddress: false
-    hostname: external.host
+    preferIpAddress: true
+    hostname: localhost
+    instance-id: "${spring.application.name}:${random.value}"

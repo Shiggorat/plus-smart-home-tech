@@ -32,7 +32,7 @@ public class SensorSnapshotStorage {
         SensorStateAvro oldState = stateMap.get(sensorId);
 
         if (oldState != null) {
-            if (oldState.getTimestamp().isAfter(eventTimestamp)  ||
+            if (oldState.getTimestamp().isAfter(eventTimestamp) ||
                     oldState.getData().equals(event.getPayload())) {
                 return Optional.empty();
             }

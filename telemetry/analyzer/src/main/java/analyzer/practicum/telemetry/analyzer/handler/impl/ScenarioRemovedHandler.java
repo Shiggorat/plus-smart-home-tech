@@ -12,6 +12,7 @@ import ru.yandex.practicum.kafka.telemetry.event.ScenarioRemovedEventAvro;
 public class ScenarioRemovedHandler implements HubEventHandler<ScenarioRemovedEventAvro> {
 
     private final ScenarioService service;
+
     @Override
     public Class<ScenarioRemovedEventAvro> getMessageType() {
         return ScenarioRemovedEventAvro.class;
