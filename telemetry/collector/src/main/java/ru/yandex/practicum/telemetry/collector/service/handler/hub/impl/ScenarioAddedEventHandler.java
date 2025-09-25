@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 public class ScenarioAddedEventHandler extends BaseHubEventHandler<ScenarioAddedEventAvro> {
 
     private final Mapper mapper;
+
     public ScenarioAddedEventHandler(EventProducer eventProducer, Mapper mapper) {
         super(eventProducer);
         this.mapper = mapper;

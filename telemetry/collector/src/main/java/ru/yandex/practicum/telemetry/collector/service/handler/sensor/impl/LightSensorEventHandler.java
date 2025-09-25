@@ -7,7 +7,7 @@ import ru.yandex.practicum.kafka.telemetry.event.LightSensorAvro;
 import ru.yandex.practicum.telemetry.collector.service.handler.EventProducer;
 
 @Component
-public class LightSensorEventHandler  extends BaseSensorEventHandler<LightSensorAvro> {
+public class LightSensorEventHandler extends BaseSensorEventHandler<LightSensorAvro> {
     public LightSensorEventHandler(EventProducer eventProducer) {
         super(eventProducer);
     }

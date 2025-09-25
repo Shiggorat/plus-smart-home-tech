@@ -26,5 +26,6 @@ public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> imple
                 .setPayload(mapToAvro(event))
                 .build();
     }
+
     protected abstract T mapToAvro(SensorEventProto event);
 }
