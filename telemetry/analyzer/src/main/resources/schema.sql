@@ -1,4 +1,4 @@
-CREATE SCHEMA IF NOT EXISTS public;
+CREATE SCHEMA IF NOT EXISTS telemetry_analyzer;
 
 DROP TABLE IF EXISTS scenario_actions, scenario_conditions, actions, conditions, sensors, scenarios;
 -- создаём таблицу scenarios

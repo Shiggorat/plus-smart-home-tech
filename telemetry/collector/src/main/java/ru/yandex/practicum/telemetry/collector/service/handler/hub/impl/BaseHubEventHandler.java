@@ -25,6 +25,7 @@ public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implemen
                 .setPayload(mapToAvro(event))
                 .build();
     }
+
     protected abstract T mapToAvro(HubEventProto event);
 
 }
