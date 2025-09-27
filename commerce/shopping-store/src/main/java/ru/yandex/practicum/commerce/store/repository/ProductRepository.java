@@ -5,11 +5,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.commerce.enums.ProductCategory;
 import ru.yandex.practicum.commerce.enums.QuantityState;
 import ru.yandex.practicum.commerce.store.model.ProductEntity;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -18,15 +18,15 @@ public interface ProductRepository extends JpaRepository<ProductEntity, String> 
 
     Optional<ProductEntity> findByProductId(String id);
 
-    @Transactional
     @Modifying
     @Query("UPDATE ProductEntity p SET p.quantityState = :quantityState WHERE p.productId = :productId")
     int setProductQuantityState(QuantityState quantityState, String productId);
 
-    @Transactional
     @Modifying
     @Query("UPDATE ProductEntity p SET p.productState = 'DEACTIVATE' WHERE p.productId = :id")
     int deactivateProduct(String id);
 
     Page<ProductEntity> findAllByProductCategory(ProductCategory productCategory, Pageable pageable);
+
+    List<ProductEntity> findByProductIdIn(List<String> productIds);
 }

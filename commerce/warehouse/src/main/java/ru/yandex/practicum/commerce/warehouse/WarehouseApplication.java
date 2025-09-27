@@ -1,15 +1,13 @@
-package ru.yandex.practicum.commerce.cart;
+package ru.yandex.practicum.commerce.warehouse;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
-@EnableFeignClients
-public class ShoppingCart {
+public class WarehouseApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ShoppingCart.class, args);
+        SpringApplication.run(WarehouseApplication.class, args);
     }
 }

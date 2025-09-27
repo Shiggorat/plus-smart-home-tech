@@ -9,17 +9,17 @@ import java.util.Set;
 
 public interface ShoppingCartOperations {
     @GetMapping
-    public ShoppingCartDto getShoppingCart(@RequestParam String username);
+    ShoppingCartDto getShoppingCart(@RequestParam String username);
 
     @PutMapping
-    public ShoppingCartDto addProductsToCart(@RequestParam String username, @RequestBody Map<String, Integer> productsMap);
+    ShoppingCartDto addProductsToCart(@RequestParam String username, @RequestBody Map<String, Integer> productsMap);
 
     @DeleteMapping
-    public void deactivateShoppingCart(@RequestParam String username);
+    void deactivateShoppingCart(@RequestParam String username);
 
     @PostMapping("/remove")
-    public ShoppingCartDto removeProductsFromCart(@RequestParam String username, @RequestBody Set<String> productIds);
+    ShoppingCartDto removeProductsFromCart(@RequestParam String username, @RequestBody Set<String> productIds);
 
     @PostMapping("/change-quantity")
-    public ShoppingCartDto changeQuantity(@RequestParam String username, @RequestBody ChangeProductQuantityRequest request);
+    ShoppingCartDto changeQuantity(@RequestParam String username, @RequestBody ChangeProductQuantityRequest request);
 }

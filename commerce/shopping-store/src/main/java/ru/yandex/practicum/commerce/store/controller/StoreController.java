@@ -17,6 +17,10 @@ import ru.yandex.practicum.commerce.request.SetProductQuantityStateRequest;
 import ru.yandex.practicum.commerce.store.dto.GetProductsParams;
 import ru.yandex.practicum.commerce.store.service.StoreService;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/shopping-store")
@@ -68,5 +72,11 @@ public class StoreController implements ShoppingStoreOperations {
     public ProductPageDto getProducts(@RequestParam ProductCategory category, @PageableDefault(sort = "productName") Pageable pageable) {
         GetProductsParams params = new GetProductsParams(category, pageable);
         return service.getProducts(params);
+    }
+
+    @Override
+    @GetMapping("/price")
+    public Map<String, BigDecimal> getProductsPrice(List<String> productsIds) {
+        return service.getProductsPrice(productsIds);
     }
 }

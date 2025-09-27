@@ -9,11 +9,14 @@ import ru.yandex.practicum.commerce.contract.warehouse.WarehouseOperations;
 import ru.yandex.practicum.commerce.dto.AddressDto;
 import ru.yandex.practicum.commerce.dto.BookedProductsDto;
 import ru.yandex.practicum.commerce.dto.ShoppingCartDto;
-import ru.yandex.practicum.commerce.exception.ProductInShoppingCartLowQuantityInWarehouseException;
 import ru.yandex.practicum.commerce.logging.Logging;
 import ru.yandex.practicum.commerce.request.AddProductUnitRequest;
+import ru.yandex.practicum.commerce.request.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.commerce.request.NewProductInWarehouseRequest;
+import ru.yandex.practicum.commerce.request.ShippedToDeliveryRequest;
 import ru.yandex.practicum.commerce.warehouse.service.WarehouseService;
+
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -34,8 +37,7 @@ public class WarehouseController implements WarehouseOperations {
     @PostMapping("/check")
     @Logging
     @Override
-    public BookedProductsDto checkProductsQuantity(@RequestBody ShoppingCartDto cart)
-            throws ProductInShoppingCartLowQuantityInWarehouseException {
+    public BookedProductsDto checkProductsQuantity(@RequestBody ShoppingCartDto cart) {
         return service.checkProductsQuantity(cart);
     }
 
@@ -52,6 +54,24 @@ public class WarehouseController implements WarehouseOperations {
     @Override
     public AddressDto getAddress() {
         return service.getAddress();
+    }
+
+    @Override
+    @PostMapping("/return")
+    public void returnBookedProducts(@RequestBody Map<String, Integer> products) {
+        service.returnBookedProducts(products);
+    }
+
+    @Override
+    @GetMapping("/assembly")
+    public BookedProductsDto assemblyProducts(@RequestBody AssemblyProductsForOrderRequest request) {
+        return service.assemblyProducts(request);
+    }
+
+    @Override
+    @PostMapping("/shipped")
+    public void shipProducts(@RequestBody ShippedToDeliveryRequest request) {
+        service.shipProducts(request);
     }
 }
 
