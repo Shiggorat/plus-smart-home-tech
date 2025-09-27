@@ -79,6 +79,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto payOrder(String orderId) {
         OrderEntity order = getOrderById(orderId);
 
@@ -92,6 +93,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto successfulPayment(String orderId) {
         OrderEntity order = getOrderById(orderId);
         order.setOrderState(OrderState.PAID);
@@ -100,6 +102,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto paymentFailed(String orderId) {
         OrderEntity order = getOrderById(orderId);
         order.setOrderState(OrderState.PAYMENT_FAILED);
@@ -108,6 +111,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto successfulDelivery(String orderId) {
         OrderEntity order = getOrderById(orderId);
         order.setOrderState(OrderState.DELIVERED);
@@ -116,6 +120,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto deliveryFailed(String orderId) {
         OrderEntity order = getOrderById(orderId);
         order.setOrderState(OrderState.DELIVERY_FAILED);
@@ -124,6 +129,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto completeOrder(String orderId) {
         OrderEntity order = getOrderById(orderId);
         order.setOrderState(OrderState.COMPLETED);
@@ -132,6 +138,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto calculateTotal(String orderId) {
         OrderEntity order = getOrderById(orderId);
 
@@ -144,6 +151,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto calculateDelivery(String orderId) {
         OrderEntity order = getOrderById(orderId);
 
@@ -157,6 +165,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto assembleOrder(String orderId) {
         OrderEntity order = getOrderById(orderId);
 
@@ -168,6 +177,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto assemblyFailed(String orderId) {
         OrderEntity order = getOrderById(orderId);
         order.setOrderState(OrderState.ASSEMBLY_FAILED);

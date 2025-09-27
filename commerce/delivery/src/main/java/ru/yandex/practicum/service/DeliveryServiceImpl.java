@@ -1,5 +1,7 @@
 package ru.yandex.practicum.service;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.commerce.dto.DeliveryDto;
@@ -18,6 +20,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DeliveryServiceImpl implements DeliveryService {
 
     private static final String WAREHOUSE_ADDRESS_1 = "ADDRESS_1";
@@ -29,6 +32,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     private final WarehouseClientDeliveryService warehouseClientService;
 
     @Override
+    @Transactional
     public DeliveryDto createDelivery(CreateNewDeliveryRequest request) {
         DeliveryEntity delivery = deliveryMapper.toEntity(request);
         delivery.setDeliveryId(UUID.randomUUID().toString());
@@ -37,6 +41,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    @Transactional
     public void successfulDelivery(String orderId) {
         DeliveryEntity delivery = getByOrderId(orderId);
         delivery.setDeliveryState(DeliveryState.DELIVERED);
@@ -45,6 +50,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    @Transactional
     public void pickProducts(String orderId) {
         DeliveryEntity delivery = getByOrderId(orderId);
         delivery.setDeliveryState(DeliveryState.IN_PROGRESS);
@@ -53,6 +59,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    @Transactional
     public void failedDelivery(String orderId) {
         DeliveryEntity delivery = getByOrderId(orderId);
         delivery.setDeliveryState(DeliveryState.FAILED);
@@ -63,28 +70,55 @@ public class DeliveryServiceImpl implements DeliveryService {
     @Override
     public BigDecimal calculateDeliveryCost(String deliveryId) {
         DeliveryEntity delivery = repository.findById(deliveryId)
-                .orElseThrow(() -> new NoDeliveryFoundException("Delivery was not found."));
+                .orElseThrow(() -> {
+                    log.warn("Delivery not found for ID: {}", deliveryId);
+                    return new NoDeliveryFoundException("Delivery was not found.");
+                });
+
+        log.info("Calculating delivery cost for delivery ID: {}, order ID: {}", deliveryId, delivery.getOrderId());
 
         BigDecimal price = BigDecimal.valueOf(5.0);
+        log.debug("Base price: {}", price);
 
-        if (delivery.getFromAddress().getStreet().contains(WAREHOUSE_ADDRESS_2)) {
+        String fromStreet = delivery.getFromAddress().getStreet();
+        String toStreet = delivery.getToAddress().getStreet();
+        log.info("From address: {}, To address: {}", fromStreet, toStreet);
+
+        if (fromStreet.contains(WAREHOUSE_ADDRESS_2)) {
+            BigDecimal oldPrice = price;
             price = price.add(price.multiply(BigDecimal.valueOf(2)));
-        } else if (delivery.getFromAddress().getStreet().contains(WAREHOUSE_ADDRESS_1)) {
+            log.info("Warehouse address 2 detected. Price increased from {} to {}", oldPrice, price);
+        } else if (fromStreet.contains(WAREHOUSE_ADDRESS_1)) {
+            BigDecimal oldPrice = price;
             price = price.add(price);
+            log.info("Warehouse address 1 detected. Price increased from {} to {}", oldPrice, price);
+        } else {
+            log.info("No warehouse address match. No additional cost for address.");
         }
 
         if (delivery.isFragile()) {
-            price = price.add(price.multiply(BigDecimal.valueOf(0.2)));
+            BigDecimal fragileIncrement = price.multiply(BigDecimal.valueOf(0.2));
+            price = price.add(fragileIncrement);
+            log.info("Fragile item detected. Additional cost: {}, total: {}", fragileIncrement, price);
         }
 
-        price = price.add(BigDecimal.valueOf(delivery.getDeliveryWeight()).multiply(BigDecimal.valueOf(0.3)));
+        BigDecimal weightCost = BigDecimal.valueOf(delivery.getDeliveryWeight()).multiply(BigDecimal.valueOf(0.3));
+        log.info("Delivery weight: {}, cost added: {}", delivery.getDeliveryWeight(), weightCost);
+        price = price.add(weightCost);
 
-        price = price.add(BigDecimal.valueOf(delivery.getDeliveryVolume()).multiply(BigDecimal.valueOf(0.2)));
+        BigDecimal volumeCost = BigDecimal.valueOf(delivery.getDeliveryVolume()).multiply(BigDecimal.valueOf(0.2));
+        log.info("Delivery volume: {}, cost added: {}", delivery.getDeliveryVolume(), volumeCost);
+        price = price.add(volumeCost);
 
-        if (!delivery.getFromAddress().getStreet().equals(delivery.getToAddress().getStreet())) {
-            price = price.add(price.multiply(BigDecimal.valueOf(0.2)));
+        if (!fromStreet.equals(toStreet)) {
+            BigDecimal crossStreetIncrement = price.multiply(BigDecimal.valueOf(0.2));
+            price = price.add(crossStreetIncrement);
+            log.info("Different streets detected. Additional cost: {}, total: {}", crossStreetIncrement, price);
+        } else {
+            log.info("Same street for from and to addresses. No cross street additional cost.");
         }
 
+        log.info("Final calculated delivery cost for delivery ID: {}, order ID: {}: {}", deliveryId, delivery.getOrderId(), price);
         return price;
     }
 

@@ -2,6 +2,7 @@ package ru.yandex.practicum.service;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.commerce.dto.OrderDto;
 import ru.yandex.practicum.commerce.dto.PaymentDto;
 import ru.yandex.practicum.commerce.exception.NoPaymentFoundException;
@@ -26,6 +27,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final OrderClientPaymentService orderClientService;
 
     @Override
+    @Transactional
     public PaymentDto createPayment(OrderDto order) {
         PaymentEntity payment = paymentMapper.toEntity(order);
         ensurePricesArePresent(payment.getProductPrice(), payment.getDeliveryPrice());
@@ -40,6 +42,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public BigDecimal getTotalCost(OrderDto order) {
         BigDecimal deliveryPrice = order.getDeliveryPrice();
         BigDecimal productPrice = order.getProductPrice();
@@ -49,6 +52,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public void successfulPayment(String paymentId) {
         PaymentEntity payment = getPaymentById(paymentId);
         payment.setPaymentState(PaymentState.SUCCESS);
@@ -57,6 +61,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public void failedPayment(String paymentId) {
         PaymentEntity payment = getPaymentById(paymentId);
         payment.setPaymentState(PaymentState.FAILED);
