@@ -10,6 +10,7 @@ import ru.yandex.practicum.commerce.cart.model.CartState;
 import ru.yandex.practicum.commerce.cart.model.ShoppingCartEntity;
 import ru.yandex.practicum.commerce.cart.repository.CartProductRepository;
 import ru.yandex.practicum.commerce.cart.repository.CartRepository;
+import ru.yandex.practicum.commerce.cart.service.client.WarehouseClientCartService;
 import ru.yandex.practicum.commerce.dto.BookedProductsDto;
 import ru.yandex.practicum.commerce.dto.ShoppingCartDto;
 import ru.yandex.practicum.commerce.exception.NoProductsInShoppingCartException;
@@ -27,7 +28,7 @@ public class CartServiceImpl implements CartService {
     private final CartRepository cartRepository;
     private final CartMapper cartMapper;
     private final CartProductRepository productRepository;
-    private final WarehouseService warehouseService;
+    private final WarehouseClientCartService warehouseClientService;
 
 
     @Transactional
@@ -123,6 +124,6 @@ public class CartServiceImpl implements CartService {
     private BookedProductsDto checkProductsQuantity(ShoppingCartEntity shoppingCartEntity, Map<String, Integer> products) {
         ShoppingCartDto dto = cartMapper.toDto(shoppingCartEntity);
         dto.setProducts(products);
-        return warehouseService.fetchCheckProductsQuantity(dto);
+        return warehouseClientService.fetchCheckProductsQuantity(dto);
     }
 }

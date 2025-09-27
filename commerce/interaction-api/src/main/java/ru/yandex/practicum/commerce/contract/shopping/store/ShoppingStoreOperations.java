@@ -9,23 +9,30 @@ import ru.yandex.practicum.commerce.dto.ProductPageDto;
 import ru.yandex.practicum.commerce.enums.ProductCategory;
 import ru.yandex.practicum.commerce.enums.QuantityState;
 
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
 public interface ShoppingStoreOperations {
     @PutMapping
-    public ProductDto addProduct(@RequestBody @Valid ProductDto product);
+    ProductDto addProduct(@RequestBody @Valid ProductDto product);
 
     @PostMapping
-    public ProductDto updateProduct(@RequestBody @Valid ProductDto productDto);
+    ProductDto updateProduct(@RequestBody @Valid ProductDto productDto);
 
     @PostMapping("/removeProductFromStore")
-    public boolean removeProduct(@RequestBody String id);
+    boolean removeProduct(@RequestBody String id);
 
     @PostMapping("/quantityState")
-    public boolean setQuantityState(@RequestParam QuantityState quantityState, @RequestParam String productId);
+    boolean setQuantityState(@RequestParam QuantityState quantityState, @RequestParam String productId);
 
     @GetMapping("/{productId}")
-    public ProductDto getProductById(@PathVariable String productId);
+    ProductDto getProductById(@PathVariable String productId);
 
     @GetMapping
-    public ProductPageDto getProducts(@RequestParam ProductCategory category,
-                                      @PageableDefault(sort = "productName") Pageable pageable);
+    ProductPageDto getProducts(@RequestParam ProductCategory category,
+                               @PageableDefault(sort = "productName") Pageable pageable);
+
+    @GetMapping("/price")
+    Map<String, BigDecimal> getProductsPrice(@RequestBody List<String> productsIds);
 }
