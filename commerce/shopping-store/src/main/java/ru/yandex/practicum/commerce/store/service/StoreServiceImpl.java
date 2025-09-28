@@ -12,6 +12,10 @@ import ru.yandex.practicum.commerce.store.mapper.ProductMapper;
 import ru.yandex.practicum.commerce.store.model.ProductEntity;
 import ru.yandex.practicum.commerce.store.repository.ProductRepository;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
@@ -65,6 +69,16 @@ public class StoreServiceImpl implements StoreService {
         Page<ProductEntity> products = productRepository
                 .findAllByProductCategory(getProductsParams.getProductCategory(), getProductsParams.getPageable());
         return productMapper.toProductPageDto(products);
+    }
+
+    @Override
+    public Map<String, BigDecimal> getProductsPrice(List<String> productsIds) {
+        List<ProductEntity> products = productRepository.findByProductIdIn(productsIds);
+        Map<String, BigDecimal> priceById = new HashMap<>();
+        for (ProductEntity product : products) {
+            priceById.put(product.getProductId(), product.getPrice());
+        }
+        return priceById;
     }
 
     private void validateProductExists(String id) {

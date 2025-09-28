@@ -8,20 +8,32 @@ import org.springframework.web.bind.annotation.RequestBody;
 import ru.yandex.practicum.commerce.dto.AddressDto;
 import ru.yandex.practicum.commerce.dto.BookedProductsDto;
 import ru.yandex.practicum.commerce.dto.ShoppingCartDto;
-import ru.yandex.practicum.commerce.exception.ProductInShoppingCartLowQuantityInWarehouseException;
 import ru.yandex.practicum.commerce.request.AddProductUnitRequest;
+import ru.yandex.practicum.commerce.request.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.commerce.request.NewProductInWarehouseRequest;
+import ru.yandex.practicum.commerce.request.ShippedToDeliveryRequest;
+
+import java.util.Map;
 
 public interface WarehouseOperations {
     @PutMapping
     void createProduct(@RequestBody @Valid NewProductInWarehouseRequest request);
 
     @PostMapping("/check")
-    BookedProductsDto checkProductsQuantity(@RequestBody ShoppingCartDto cart) throws ProductInShoppingCartLowQuantityInWarehouseException;
+    BookedProductsDto checkProductsQuantity(@RequestBody ShoppingCartDto cart);
 
     @PostMapping("/add")
     void addProductQuantity(@RequestBody AddProductUnitRequest request);
 
     @GetMapping("/address")
     AddressDto getAddress();
+
+    @PostMapping("/return")
+    void returnBookedProducts(@RequestBody Map<String, Integer> products);
+
+    @GetMapping("/assembly")
+    BookedProductsDto assemblyProducts(@RequestBody AssemblyProductsForOrderRequest request);
+
+    @PostMapping("/shipped")
+    void shipProducts(@RequestBody ShippedToDeliveryRequest request);
 }

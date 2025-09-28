@@ -6,8 +6,8 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 @SpringBootApplication
 @EnableAspectJAutoProxy
-public class ShoppingStore {
+public class ShoppingStoreApplication {
     public static void main(String[] args) {
-        SpringApplication.run(ShoppingStore.class, args);
+        SpringApplication.run(ShoppingStoreApplication.class, args);
     }
 }
